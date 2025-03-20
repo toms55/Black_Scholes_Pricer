@@ -118,9 +118,9 @@ def plot_option_payoff(S, K, price, option_type):
     return fig
 
 def main():
-    st.set_page_config(layout="wide", page_title="Advanced Black-Scholes Option Pricer")
+    st.set_page_config(layout="wide", page_title="Black-Scholes Option Pricer")
     
-    st.title("Advanced Black-Scholes Option Pricer")
+    st.title("Black-Scholes Option Pricer")
     st.write("This app calculates option prices and Greeks using the Black-Scholes model.")
     
     # Add stock ticker input
@@ -323,115 +323,115 @@ def main():
             - The probability changes as stock price and strike price vary.
             """)
         
-        with tab2:
-            # Sensitivity analysis
-            st.subheader("Sensitivity Analysis")
+        # with tab2:
+        #     # Sensitivity analysis
+        #     st.subheader("Sensitivity Analysis")
             
-            # Create ranges for sensitivity analysis
-            param_option = st.selectbox("Parameter to analyze", 
-                                      ["Stock Price", "Volatility", "Time to Expiry", "Risk-Free Rate"])
+        #     # Create ranges for sensitivity analysis
+        #     param_option = st.selectbox("Parameter to analyze", 
+        #                               ["Stock Price", "Volatility", "Time to Expiry", "Risk-Free Rate"])
             
-            if param_option == "Stock Price":
-                param_range = np.linspace(max(0.5 * S, S - 3 * S * sigma * np.sqrt(T)), 
-                                        S + 3 * S * sigma * np.sqrt(T), 100)
-                x_label = "Stock Price"
-                param_values = [(s, K, T, r, sigma, option_type, q) for s in param_range]
-            elif param_option == "Volatility":
-                param_range = np.linspace(max(0.01, sigma - 0.2), sigma + 0.2, 100)
-                x_label = "Volatility"
-                param_values = [(S, K, T, r, s, option_type, q) for s in param_range]
-            elif param_option == "Time to Expiry":
-                param_range = np.linspace(max(0.01, T - 0.5), T + 0.5, 100)
-                x_label = "Time to Expiry (years)"
-                param_values = [(S, K, t, r, sigma, option_type, q) for t in param_range]
-            else:  # Risk-Free Rate
-                param_range = np.linspace(max(0.001, r - 0.05), r + 0.05, 100)
-                x_label = "Risk-Free Rate"
-                param_values = [(S, K, T, rate, sigma, option_type, q) for rate in param_range]
+        #     if param_option == "Stock Price":
+        #         param_range = np.linspace(max(0.5 * S, S - 3 * S * sigma * np.sqrt(T)), 
+        #                                 S + 3 * S * sigma * np.sqrt(T), 100)
+        #         x_label = "Stock Price"
+        #         param_values = [(s, K, T, r, sigma, option_type, q) for s in param_range]
+        #     elif param_option == "Volatility":
+        #         param_range = np.linspace(max(0.01, sigma - 0.2), sigma + 0.2, 100)
+        #         x_label = "Volatility"
+        #         param_values = [(S, K, T, r, s, option_type, q) for s in param_range]
+        #     elif param_option == "Time to Expiry":
+        #         param_range = np.linspace(max(0.01, T - 0.5), T + 0.5, 100)
+        #         x_label = "Time to Expiry (years)"
+        #         param_values = [(S, K, t, r, sigma, option_type, q) for t in param_range]
+        #     else:  # Risk-Free Rate
+        #         param_range = np.linspace(max(0.001, r - 0.05), r + 0.05, 100)
+        #         x_label = "Risk-Free Rate"
+        #         param_values = [(S, K, T, rate, sigma, option_type, q) for rate in param_range]
             
-            # Calculate option prices for each parameter value
-            prices = []
-            deltas = []
-            gammas = []
-            thetas = []
-            vegas = []
+        #     # Calculate option prices for each parameter value
+        #     prices = []
+        #     deltas = []
+        #     gammas = []
+        #     thetas = []
+        #     vegas = []
             
-            for params in param_values:
-                result = black_scholes(*params)
-                prices.append(result["price"])
-                deltas.append(result["delta"])
-                gammas.append(result["gamma"])
-                thetas.append(result["theta"])
-                vegas.append(result["vega"])
+        #     for params in param_values:
+        #         result = black_scholes(*params)
+        #         prices.append(result["price"])
+        #         deltas.append(result["delta"])
+        #         gammas.append(result["gamma"])
+        #         thetas.append(result["theta"])
+        #         vegas.append(result["vega"])
             
-            # Create plots - Modified to 2x2 grid (removed unused subplot)
-            fig = make_subplots(rows=2, cols=2, 
-                               subplot_titles=["Option Price", "Delta", 
-                                             "Gamma", "Theta"])
+        #     # Create plots - Modified to 2x2 grid (removed unused subplot)
+        #     fig = make_subplots(rows=2, cols=2, 
+        #                        subplot_titles=["Option Price", "Delta", 
+        #                                      "Gamma", "Theta"])
             
-            # Option Price
-            fig.add_trace(go.Scatter(x=param_range, y=prices, mode='lines', name='Price'), 
-                         row=1, col=1)
+        #     # Option Price
+        #     fig.add_trace(go.Scatter(x=param_range, y=prices, mode='lines', name='Price'), 
+        #                  row=1, col=1)
             
-            # Delta
-            fig.add_trace(go.Scatter(x=param_range, y=deltas, mode='lines', name='Delta'), 
-                         row=1, col=2)
+        #     # Delta
+        #     fig.add_trace(go.Scatter(x=param_range, y=deltas, mode='lines', name='Delta'), 
+        #                  row=1, col=2)
             
-            # Gamma
-            fig.add_trace(go.Scatter(x=param_range, y=gammas, mode='lines', name='Gamma'), 
-                         row=2, col=1)
+        #     # Gamma
+        #     fig.add_trace(go.Scatter(x=param_range, y=gammas, mode='lines', name='Gamma'), 
+        #                  row=2, col=1)
             
-            # Theta
-            fig.add_trace(go.Scatter(x=param_range, y=thetas, mode='lines', name='Theta'), 
-                         row=2, col=2)
+        #     # Theta
+        #     fig.add_trace(go.Scatter(x=param_range, y=thetas, mode='lines', name='Theta'), 
+        #                  row=2, col=2)
             
-            # Add Vega to the Gamma subplot (instead of having its own)
-            fig.add_trace(go.Scatter(x=param_range, y=vegas, mode='lines', name='Vega',
-                                   line=dict(dash='dash')), 
-                         row=2, col=1)
+        #     # Add Vega to the Gamma subplot (instead of having its own)
+        #     fig.add_trace(go.Scatter(x=param_range, y=vegas, mode='lines', name='Vega',
+        #                            line=dict(dash='dash')), 
+        #                  row=2, col=1)
             
-            # Update layout
-            fig.update_layout(height=700, width=800, showlegend=True,
-                             title=f"Sensitivity Analysis: Effect of {param_option} on Option Greeks")
+        #     # Update layout
+        #     fig.update_layout(height=700, width=800, showlegend=True,
+        #                      title=f"Sensitivity Analysis: Effect of {param_option} on Option Greeks")
             
-            # Add vertical lines for current parameter value
-            if param_option == "Stock Price":
-                current_value = S
-            elif param_option == "Volatility":
-                current_value = sigma
-            elif param_option == "Time to Expiry":
-                current_value = T
-            else:  # Risk-Free Rate
-                current_value = r
+        #     # Add vertical lines for current parameter value
+        #     if param_option == "Stock Price":
+        #         current_value = S
+        #     elif param_option == "Volatility":
+        #         current_value = sigma
+        #     elif param_option == "Time to Expiry":
+        #         current_value = T
+        #     else:  # Risk-Free Rate
+        #         current_value = r
                 
-            for i in range(1, 3):
-                for j in range(1, 3):
-                    fig.add_vline(x=current_value, line_dash="dash", line_color="red", 
-                                 row=i, col=j)
+        #     for i in range(1, 3):
+        #         for j in range(1, 3):
+        #             fig.add_vline(x=current_value, line_dash="dash", line_color="red", 
+        #                          row=i, col=j)
             
-            # Update x-axis titles
-            for i in range(1, 3):
-                for j in range(1, 3):
-                    fig.update_xaxes(title_text=x_label, row=i, col=j)
+        #     # Update x-axis titles
+        #     for i in range(1, 3):
+        #         for j in range(1, 3):
+        #             fig.update_xaxes(title_text=x_label, row=i, col=j)
             
-            st.plotly_chart(fig, use_container_width=True)
+        #     st.plotly_chart(fig, use_container_width=True)
         
-        with tab3:
-            # Option payoff diagram
-            payoff_fig = plot_option_payoff(S, K, results["price"], option_type)
-            st.plotly_chart(payoff_fig, use_container_width=True)
+        # with tab3:
+        #     # Option payoff diagram
+        #     payoff_fig = plot_option_payoff(S, K, results["price"], option_type)
+        #     st.plotly_chart(payoff_fig, use_container_width=True)
             
-            # Information about the payoff
-            if option_type == "call":
-                breakeven = K + results["price"]
-                st.write(f"**Breakeven Price:** ${breakeven:.2f} (Stock needs to rise by {(breakeven/S-1)*100:.1f}%)")
-                st.write(f"**Maximum Loss:** ${results['price']:.2f} (Premium paid)")
-                st.write("**Maximum Profit:** Unlimited (Stock price - Strike price - Premium)")
-            else:
-                breakeven = K - results["price"]
-                st.write(f"**Breakeven Price:** ${breakeven:.2f} (Stock needs to fall by {(1-breakeven/S)*100:.1f}%)")
-                st.write(f"**Maximum Loss:** ${results['price']:.2f} (Premium paid)")
-                st.write(f"**Maximum Profit:** ${K - results['price']:.2f} (Strike price - Premium)")
+        #     # Information about the payoff
+        #     if option_type == "call":
+        #         breakeven = K + results["price"]
+        #         st.write(f"**Breakeven Price:** ${breakeven:.2f} (Stock needs to rise by {(breakeven/S-1)*100:.1f}%)")
+        #         st.write(f"**Maximum Loss:** ${results['price']:.2f} (Premium paid)")
+        #         st.write("**Maximum Profit:** Unlimited (Stock price - Strike price - Premium)")
+        #     else:
+        #         breakeven = K - results["price"]
+        #         st.write(f"**Breakeven Price:** ${breakeven:.2f} (Stock needs to fall by {(1-breakeven/S)*100:.1f}%)")
+        #         st.write(f"**Maximum Loss:** ${results['price']:.2f} (Premium paid)")
+        #         st.write(f"**Maximum Profit:** ${K - results['price']:.2f} (Strike price - Premium)")
     
     # Add educational information
     with st.expander("About the Black-Scholes Model"):
