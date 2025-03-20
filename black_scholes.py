@@ -134,7 +134,7 @@ def main():
             if st.session_state.stock_data['name']:
                 st.caption(f"Stock: {st.session_state.stock_data['name']}")
         else:
-            S = st.number_input("Current Stock Price (S)", min_value=0.01, value=.0, step=0.01, format="%.2f")
+            S = st.number_input("Current Stock Price (S)", min_value=0.01, value=100.0, step=0.01, format="%.2f")
         
         K = st.number_input("Strike Price (K)", min_value=0.01, value=S, step=1.0, format="%.2f")
         T = st.number_input("Time to Expiry (T) in years", min_value=0.001, max_value=10.0, value=1.0, step=0.01)
@@ -153,17 +153,27 @@ def main():
             sigma = st.number_input("Volatility (sigma) as a decimal", min_value=0.01, max_value=2.0, value=0.2, step=0.01)
         
         # Dividend yield input - use fetched data if available
+        # FIX: Handle high dividend yields by capping at max_value
+        max_dividend = 1.0  # Increased from 0.5 to 1.0 (100%)
         if st.session_state.stock_data and st.session_state.stock_data.get('dividend_yield') is not None:
+            fetched_dividend = float(st.session_state.stock_data['dividend_yield'])
+            # Cap the dividend yield at the maximum allowed value
+            capped_dividend = min(fetched_dividend, max_dividend)
+            
             q = st.number_input("Dividend Yield (q) as a decimal", 
                               min_value=0.0, 
-                              max_value=0.5,
-                              value=float(st.session_state.stock_data['dividend_yield']),
+                              max_value=max_dividend,
+                              value=capped_dividend,
                               step=0.001,
                               format="%.3f")
-            if st.session_state.stock_data['dividend_yield'] > 0:
-                st.caption(f"Current dividend yield: {st.session_state.stock_data['dividend_yield']:.3f}")
+            
+            # Add a warning if the dividend yield was capped
+            if fetched_dividend > max_dividend:
+                st.warning(f"Actual dividend yield ({fetched_dividend:.3f}) exceeds maximum allowed value. Using {max_dividend:.3f} instead.")
+            elif fetched_dividend > 0:
+                st.caption(f"Current dividend yield: {fetched_dividend:.3f}")
         else:
-            q = st.number_input("Dividend Yield (q) as a decimal", min_value=0.0, max_value=0.5, value=0.0, step=0.001, format="%.3f")
+            q = st.number_input("Dividend Yield (q) as a decimal", min_value=0.0, max_value=max_dividend, value=0.0, step=0.001, format="%.3f")
             
         option_type = st.selectbox("Option Type", ["call", "put"])
         
