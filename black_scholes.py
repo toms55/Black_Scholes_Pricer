@@ -182,7 +182,7 @@ def main():
 
     with col2:
         # Probability Matrix
-        st.subheader("Probability In-The-Money Matrix")
+        st.subheader("In-The-Money Probability Matrix")
         
         # Number of data points to use for the matrix
         num_points = st.slider("Matrix Resolution", min_value=5, max_value=30, value=15)
