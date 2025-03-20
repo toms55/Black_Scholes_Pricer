@@ -181,7 +181,7 @@ def main():
             else:
                 st.caption(f"Current dividend yield: {fetched_dividend:.3f} ({fetched_dividend*100:.2f}%)")
         else:
-            q = st.number_input("Dividend Yield (q) as a decimal", min_value=0.0, max_value=max_dividend, value=0.0, step=0.001, format="%.3f"
+            q = st.number_input("Dividend Yield (q) as a decimal", min_value=0.0, max_value=max_dividend, value=0.0, step=0.001, format="%.3f")
                     
         option_type = st.selectbox("Option Type", ["call", "put"])
         
