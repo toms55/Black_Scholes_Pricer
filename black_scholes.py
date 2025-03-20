@@ -156,7 +156,7 @@ def main():
         if st.session_state.stock_data and st.session_state.stock_data.get('dividend_yield') is not None:
             q = st.number_input("Dividend Yield (q) as a decimal", 
                               min_value=0.0, 
-                              max_value=0.5, 
+                              max_value=100, #OLD VAL WAS 0.5 
                               value=float(st.session_state.stock_data['dividend_yield']),
                               step=0.001,
                               format="%.3f")
