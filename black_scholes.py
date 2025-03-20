@@ -213,7 +213,9 @@ def main():
             st.metric("Rho (per 1%)", f"${results['rho']:.4f}")
 
     with col2:
-        tab1, tab2, tab3 = st.tabs(["Probability Matrix", "Sensitivity Analysis", "Payoff Diagram"])
+        # tab1, tab2, tab3 = st.tabs(["Probability Matrix", "Sensitivity Analysis", "Payoff Diagram"])
+
+        tab1 = st.tabs(["Probability Matrix"])
         
         with tab1:
             # Create probability matrix (replacing 3D surface with 2D heatmap)
