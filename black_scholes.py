@@ -134,7 +134,7 @@ def main():
             if st.session_state.stock_data['name']:
                 st.caption(f"Stock: {st.session_state.stock_data['name']}")
         else:
-            S = st.number_input("Current Stock Price (S)", min_value=0.01, value=100.0, step=0.01, format="%.2f")
+            S = st.number_input("Current Stock Price (S)", min_value=0.01, value=.0, step=0.01, format="%.2f")
         
         K = st.number_input("Strike Price (K)", min_value=0.01, value=S, step=1.0, format="%.2f")
         T = st.number_input("Time to Expiry (T) in years", min_value=0.001, max_value=10.0, value=1.0, step=0.01)
@@ -156,7 +156,7 @@ def main():
         if st.session_state.stock_data and st.session_state.stock_data.get('dividend_yield') is not None:
             q = st.number_input("Dividend Yield (q) as a decimal", 
                               min_value=0.0, 
-                              max_value=100, #OLD VAL WAS 0.5 
+                              max_value=0.5,
                               value=float(st.session_state.stock_data['dividend_yield']),
                               step=0.001,
                               format="%.3f")
