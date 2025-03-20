@@ -154,9 +154,17 @@ def main():
         
         # Dividend yield input - use fetched data if available
         # FIX: Handle high dividend yields by capping at max_value
-        max_dividend = 1.0  # Increased from 0.5 to 1.0 (100%)
+        
+        # Dividend yield input - use fetched data if available
+        max_dividend = 1.0  # Maximum allowed dividend yield (100%)
         if st.session_state.stock_data and st.session_state.stock_data.get('dividend_yield') is not None:
             fetched_dividend = float(st.session_state.stock_data['dividend_yield'])
+            
+            # Convert percentage-like values to proper decimals
+            # If dividend yield > 1.0, assume it's a percentage already and convert to decimal
+            if fetched_dividend > 1.0:
+                fetched_dividend = fetched_dividend / 100
+            
             # Cap the dividend yield at the maximum allowed value
             capped_dividend = min(fetched_dividend, max_dividend)
             
@@ -167,14 +175,14 @@ def main():
                               step=0.001,
                               format="%.3f")
             
-            # Add a warning if the dividend yield was capped
+            # Add information about the dividend yield
             if fetched_dividend > max_dividend:
                 st.warning(f"Actual dividend yield ({fetched_dividend:.3f}) exceeds maximum allowed value. Using {max_dividend:.3f} instead.")
-            elif fetched_dividend > 0:
-                st.caption(f"Current dividend yield: {fetched_dividend:.3f}")
+            else:
+                st.caption(f"Current dividend yield: {fetched_dividend:.3f} ({fetched_dividend*100:.2f}%)")
         else:
-            q = st.number_input("Dividend Yield (q) as a decimal", min_value=0.0, max_value=max_dividend, value=0.0, step=0.001, format="%.3f")
-            
+            q = st.number_input("Dividend Yield (q) as a decimal", min_value=0.0, max_value=max_dividend, value=0.0, step=0.001, format="%.3f"
+                    
         option_type = st.selectbox("Option Type", ["call", "put"])
         
         # Calculate option price and Greeks
