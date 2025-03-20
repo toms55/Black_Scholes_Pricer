@@ -172,6 +172,8 @@ def main():
         
         # Display results
         st.subheader("Option Pricing Results")
+        
+        # Create a better layout for displaying all Greeks
         col1a, col1b = st.columns(2)
         with col1a:
             st.metric("Option Price", f"${results['price']:.2f}")
@@ -179,10 +181,22 @@ def main():
         with col1b:
             st.metric("Delta", f"{results['delta']:.4f}")
             st.metric("Gamma", f"{results['gamma']:.4f}")
+        
+        # Add the remaining Greeks in a new row
+        col1c, col1d, col1e = st.columns(3)
+        with col1c:
+            st.metric("Theta", f"{results['theta']:.4f}")
+            st.caption("Daily time decay")
+        with col1d:
+            st.metric("Vega", f"{results['vega']:.4f}")
+            st.caption("Per 1% vol change")
+        with col1e:
+            st.metric("Rho", f"{results['rho']:.4f}")
+            st.caption("Per 1% rate change")
 
     with col2:
         # Probability Matrix
-        st.subheader("In-The-Money Probability Matrix")
+        st.subheader("Probability In-The-Money Matrix")
         
         # Number of data points to use for the matrix
         num_points = st.slider("Matrix Resolution", min_value=5, max_value=30, value=15)
